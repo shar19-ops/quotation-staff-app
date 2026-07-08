@@ -52,6 +52,13 @@ body {
   background: #4b5563 !important;
 }
 
+#btnMail {
+  background: #059669 !important;
+}
+#btnMail:hover {
+  background: #047857 !important;
+}
+
 .theme-select {
   margin-left: auto;
   font-size: 13px;
@@ -481,6 +488,17 @@ legend {
   flex-direction: column;
 }
 
+.preview-modal-mail-hint {
+  margin: 16px 0 0 0;
+  padding: 10px 14px;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  border-radius: 6px;
+  color: #065f46;
+  font-size: 13px;
+  text-align: center;
+}
+
 .preview-modal-footer {
   margin-top: 16px;
   display: flex;
@@ -608,6 +626,7 @@ legend {
     <button id="btnOpenFile">ファイルを開く</button>
     <input type="file" id="fileInput" accept="application/json" style="display:none">
     <button id="btnPrint">プレビュー</button>
+    <button id="btnMail">📧 メール送信</button>
   </div>
   <!-- themeColor は JS が参照するため非表示で保持 -->
   <select id="themeColor" style="display:none">
@@ -616,6 +635,7 @@ legend {
   </select>
   <p class="hint">「ファイルを開く」で業者から受け取った見積書JSONファイルを読み込みます。「工事情報」は修正できます。「業者(自社)情報」「明細内容」は閲覧のみで編集はできません(印刷・出力は可能です)。「プレビュー」を押すと印刷プレビューが開きます。</p>
   <p class="hint hint-notice">添付ファイルは閲覧のみで、削除はできません。</p>
+  <p class="hint">「📧 メール送信」: 印刷プレビューが開き、「印刷実行」でPDFとして保存すると、続けてOutlook(既定のメールソフト)の新規メール画面が開きます。保存したPDFファイルはメールへ手動で添付してください(ブラウザの仕様上、自動添付はできません)。</p>
 </div>
 
 <div class="layout">
@@ -755,6 +775,9 @@ legend {
         <div id="previewLayerB" class="overlay-layer"></div>
       </div>
     </div>
+    <p class="preview-modal-mail-hint no-print" id="previewMailHint" style="display:none;">
+      印刷画面で「PDFに保存」を選んで保存してください。保存後、Outlookの新規メール画面が自動で開きます(PDFの添付は手動で行ってください)。
+    </p>
     <div class="preview-modal-footer">
       <button id="btnPrintFromPreview">印刷実行</button>
       <button class="btn-modal-close" id="btnClosePreview2">閉じる</button>
@@ -1500,10 +1523,29 @@ function openPrintPreview() {
   buildAttachmentPages(document.getElementById("previewModal").querySelector(".preview-modal-body"));
   buildAttachmentPages(document.getElementById("printSource"));
   document.getElementById("previewModal").style.display = "flex";
+  document.getElementById("previewMailHint").style.display = pendingMailAfterPrint ? "block" : "none";
 }
 
 function closePrintPreview() {
   document.getElementById("previewModal").style.display = "none";
+}
+
+// 「メール送信」: ブラウザはメールへの自動添付ができないため、PDF保存(印刷実行)後に
+// mailto:リンクでOutlook(既定のメールソフト)の新規メール画面を開くところまでを自動化する。
+// PDFファイル自体の添付は手動で行ってもらう。
+let pendingMailAfterPrint = false;
+
+function buildMailtoUrl() {
+  const data = collectFormData();
+  const subjectParts = ["見積書確認", data.projectNo, data.projectName].filter(Boolean);
+  const subject = subjectParts.join("_");
+  const body = "見積書(PDF)を添付しております。ご確認をお願いいたします。\n\n※先ほど保存したPDFファイルをこのメールに添付してください。";
+  return "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+}
+
+function startMailFlow() {
+  pendingMailAfterPrint = true;
+  openPrintPreview();
 }
 
 function applyLoadedData(data) {
@@ -1561,12 +1603,26 @@ document.addEventListener("DOMContentLoaded", () => {
     e.target.value = "";
   });
 
-  document.getElementById("btnPrint").addEventListener("click", openPrintPreview);
-  document.getElementById("btnClosePreview").addEventListener("click", closePrintPreview);
-  document.getElementById("btnClosePreview2").addEventListener("click", closePrintPreview);
+  document.getElementById("btnPrint").addEventListener("click", () => {
+    pendingMailAfterPrint = false;
+    openPrintPreview();
+  });
+  document.getElementById("btnMail").addEventListener("click", startMailFlow);
+  document.getElementById("btnClosePreview").addEventListener("click", () => {
+    pendingMailAfterPrint = false;
+    closePrintPreview();
+  });
+  document.getElementById("btnClosePreview2").addEventListener("click", () => {
+    pendingMailAfterPrint = false;
+    closePrintPreview();
+  });
   document.getElementById("btnPrintFromPreview").addEventListener("click", () => {
     closePrintPreview();
     window.print();
+    if (pendingMailAfterPrint) {
+      pendingMailAfterPrint = false;
+      window.location.href = buildMailtoUrl();
+    }
   });
 
   document.getElementById("btnCloseAttachmentView").addEventListener("click", closeAttachmentView);
