@@ -548,6 +548,7 @@
     </div>
     <ol>
       <li><a href="#overview">アプリの概要</a></li>
+      <li><a href="#request-send">見積依頼(業者への依頼)</a></li>
       <li><a href="#screen">画面の見方</a></li>
       <li><a href="#workflow">基本操作の流れ</a></li>
       <li><a href="#fields">編集できる項目・できない項目</a></li>
@@ -579,8 +580,41 @@
       </div>
     </section>
 
+    <section id="request-send">
+      <h2><span class="num">02</span>見積依頼(業者への見積作成依頼)</h2>
+      <p class="lede">業者へ見積を依頼するときは、<strong>Y-Format(社内書式アプリ)で「本-購買-A0004 見積依頼書／注文書付属書」を作成</strong>し、保存した<strong>JSONファイルを添付して、業者へ見積作成依頼メールを送付</strong>します。</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <h3>Y-Formatで見積依頼書を作成する</h3>
+            <p>Y-Formatの「本-購買-A0004 見積依頼書／注文書付属書」(労務・材料労務はA0004-1、物品納品はA0004-2)を開き、業者名・工事番号・工事名称・施工場所・工期などと、各項目の○✕を入力します。</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <h3>JSONファイルに保存する</h3>
+            <p>Y-Formatの<span class="op">「ファイルに保存」</span>で、見積依頼書をJSONファイル(<code>.json</code>)として保存します。</p>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <h3>JSONファイルを添付して、業者へ見積作成依頼メールを送付する</h3>
+            <p>保存したJSONファイルをメールに添付して、業者へ見積作成を依頼します。業者は「雄電社指定見積書」でこのファイルを読み込むと、工番・工事名・施工場所が自動で入り、見積書と一緒に見積依頼書を返送できます(<a href="#request">見積依頼書の確認</a>)。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note caution">
+        <strong>複数の業者を1つのファイルにまとめた場合</strong> — Y-Formatで「業者を追加」して複数の業者を1つのファイルに入れると、業者側では自社の分だけが取り込まれますが、<strong>ファイル自体には他の業者の名前や内容も含まれます</strong>。送付先に応じてファイルを分けるなど、ご注意ください。
+      </div>
+    </section>
+
     <section id="screen">
-      <h2><span class="num">02</span>画面の見方</h2>
+      <h2><span class="num">03</span>画面の見方</h2>
       <p class="lede">画面はツールバーと入力欄で構成されています。各欄には「閲覧のみ」「修正可」のバッジが付いています。</p>
 
       <div class="mockup">
@@ -624,7 +658,7 @@
     </section>
 
     <section id="workflow">
-      <h2><span class="num">03</span>基本操作の流れ</h2>
+      <h2><span class="num">04</span>基本操作の流れ</h2>
       <p class="lede">見積データを受け取ってから印刷・送付するまでの標準的な手順です。</p>
 
       <div class="flow">
@@ -639,7 +673,7 @@
           <div class="flow-num">2</div>
           <div class="flow-body">
             <h3>工事情報・業者見積日を確認・修正する</h3>
-            <p>事業所、工番、工事名、施工場所、工期、業者見積日を確認し、必要に応じて修正します。業者見積日が工期(開始)を過ぎていると警告が出ます(04章)。</p>
+            <p>事業所、工番、工事名、施工場所、工期、業者見積日を確認し、必要に応じて修正します。業者見積日が工期(開始)を過ぎていると警告が出ます(05章)。</p>
           </div>
         </div>
         <div class="flow-step">
@@ -674,7 +708,7 @@
     </section>
 
     <section id="fields">
-      <h2><span class="num">04</span>編集できる項目・できない項目</h2>
+      <h2><span class="num">05</span>編集できる項目・できない項目</h2>
       <p class="lede">社員側で修正できるのは「工事情報」「業者見積日」と「担当者確認印」です。それ以外は業者側の入力内容をそのまま尊重するため、閲覧のみとなっています。</p>
 
       <div class="table-wrap">
@@ -717,7 +751,7 @@
     </section>
 
     <section id="request">
-      <h2><span class="num">05</span>見積依頼書の確認</h2>
+      <h2><span class="num">06</span>見積依頼書の確認</h2>
       <p class="lede">業者が見積書に「見積依頼書／注文書付属書」(本-購買-A0004)を取り込んでいる場合は、工事情報の上に「見積依頼書あり」と表示されます。</p>
       <ul class="kbd-list">
         <li><span class="op">「見積依頼書を表示・印刷」</span>で、見積依頼書(表面・裏面の約款)を確認できます。表示のみで、内容は変更できません。</li>
@@ -727,7 +761,7 @@
     </section>
 
     <section id="stamp">
-      <h2><span class="num">06</span>担当者確認印について</h2>
+      <h2><span class="num">07</span>担当者確認印について</h2>
       <p class="lede">「担当者確認印(社内)」欄に苗字を入力すると、見積書に丸型のデート印(確認印)が自動で押されます(A4縦では注記の下の社内確認欄の右端)。役職によって表示のされ方と色が変わります。</p>
 
       <div class="stamp-card">
@@ -764,7 +798,7 @@
     </section>
 
     <section id="print">
-      <h2><span class="num">07</span>印刷・PDF保存</h2>
+      <h2><span class="num">08</span>印刷・PDF保存</h2>
       <p class="lede">印刷の方法は2つあります。</p>
       <ul class="kbd-list">
         <li><span class="op">「印刷」</span>: プレビューを開かずに、そのまま印刷画面を開きます。</li>
@@ -778,7 +812,7 @@
     </section>
 
     <section id="save">
-      <h2><span class="num">08</span>保存</h2>
+      <h2><span class="num">09</span>保存</h2>
       <p class="lede"><span class="op">「保存」</span>を押すと、修正した工事情報・業者見積日を含む見積書データを、JSONファイルとして保存します。</p>
       <ul class="kbd-list">
         <li>ファイル名は<strong>「工番_工事名(頭6文字)_業者名_業者見積日.json」</strong>です(例: <code>A12B34567890_〇〇ビル新築_株式会社サンプル電工_20261117.json</code>)。工事名・業者名の空白は詰め、ファイル名に使えない記号は除きます。</li>
@@ -789,7 +823,7 @@
     </section>
 
     <section id="mail">
-      <h2><span class="num">09</span>上長へデータで送付する(メール送信)</h2>
+      <h2><span class="num">10</span>上長へデータで送付する(メール送信)</h2>
       <p class="lede">ツールバーの<span class="op">「📧 メール送信」</span>は、印刷プレビュー表示 → PDF保存 → メールソフト起動、までを補助する機能です。ブラウザの仕様上、PDFの自動添付はできないため、最後の添付だけは手動で行う必要があります。</p>
 
       <div class="flow">
@@ -817,7 +851,7 @@
     </section>
 
     <section id="attachments">
-      <h2><span class="num">10</span>添付ファイルの確認</h2>
+      <h2><span class="num">11</span>添付ファイルの確認</h2>
       <p class="lede">業者が添付した別紙(画像・PDF)は「添付ファイル(別紙)」欄の一覧に表示されます。各行の<span class="op">「表示」</span>ボタンを押すと、ダウンロードせずに画面上でそのまま内容を確認できます。</p>
       <ul class="kbd-list">
         <li>添付ファイルは<strong>閲覧、印刷のみ</strong>で、削除はできません。追加もできません。</li>
@@ -827,7 +861,7 @@
     </section>
 
     <section id="faq">
-      <h2><span class="num">11</span>注意事項・Q&amp;A</h2>
+      <h2><span class="num">12</span>注意事項・Q&amp;A</h2>
       <dl class="faq">
         <dt>読み込めるファイルの種類は?</dt>
         <dd>業者用アプリ(雄電社指定見積書)で保存した見積書データ、またはこのアプリの「保存」で保存したデータ(拡張子 <code>.json</code>)です。PDFや画像ファイルは「ファイルを開く」では読み込めません。</dd>
